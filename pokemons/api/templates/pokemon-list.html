@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title%} Pokemon List {% endblock %}
+
+{% block body %}
+<h1>Pokemon List</h1>
+
+<form method="POST">
+
+<div>
+    {% for pokemon in pokemonList %}
+
+    <div>
+        <a class="btn float-right" data-bs-toggle="modal" data-bs-target="#modalpokemon{{pokemon.id}}">
+        <img src="{{pokemon.sprites.front_default}}">
+            <div>{{pokemon.name}}</div>
+
+            </a>
+       </div>
+
+</div>
+
+            <div id="modalpokemon{{pokemon.id}}" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!--  header -->
+                        <div class="modal-header">
+                            <h4 class="modal-title">#{{pokemon.id}} {{pokemon.name}}</h4>
+                        </div>
+
+                        <!--  body -->
+                        <div class="modal-body">
+                                <div >
+                                    <img src="{{pokemon.sprites.front_default}}" width="140px" height="140px">
+                                </div>
+
+                            <table cellpadding="10px">
+                                <thead></thead>
+                                <tbody>
+                                <tr >
+                                    <td rowspan="2" valign="top">
+                                        <div><b>Moves:</b><br>
+                                            {% for pokemonMoves in pokemon.moves|slice:":6" %}
+                                            <label>{{pokemonMoves.move.name}}</label><br>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                    <td rowspan="1">
+                                        <div><b>Type:</b><br>
+                                            {% for pokemonTypes in pokemon.types %}
+                                            <label>{{pokemonTypes.type.name}}</label><br>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                </tr>
+
+                                <tr>
+                                    <td rowspan="1">
+                                         <div><b>Abilities:</b><br>
+                                            {% for pokemonAbility in pokemon.abilities %}
+                                            <label>{{pokemonAbility.ability.name}}</label><br>
+                                            {% endfor %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+    {% endfor %}
+    <button type="submit" value="{{nextURL}}" name="nextURL">NEXT</button>
+     {% csrf_token %}
+    </form>
+
+{% endblock %}
